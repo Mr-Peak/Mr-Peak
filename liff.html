@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบครุภัณฑ์</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href='style.css' rel='stylesheet'>
+</head>
+
+<body>
+  <div class="container d-flex justify-content-center  my-3 d-none " id="databox">
+    <div class="col-md-6">
+      <div class="card profile-card-5  px-3">
+        <div class="card-img-block">
+          <img id="picdataRe" src="">
+        </div>
+        <div class="card-block">
+          <h4 class="card-title mt-3" id="idR"></h4>
+          <div class="meta ">
+            <a id="">คอมพิวเตอร์</a>
+          </div>
+          <div class="card-text pb-3">
+            <span>ผู้ดูแล : </span>
+            <span id="nameR"></span>
+          </div>
+        </div>
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+              type="button" role="tab" aria-controls="nav-home" aria-selected="true">ข้อมูล</button>
+            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+              type="button" role="tab" aria-controls="nav-profile" aria-selected="false">แจ้งซ่อม</button>
+            <button class="nav-link" id="nav-detail-tab" data-bs-toggle="tab" data-bs-target="#nav-detail" type="button"
+              role="tab" aria-controls="nav-detail" aria-selected="false">สถานะการซ่อม</button>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
+            tabindex="0">
+            <div class="card border-0 m-2">
+              <div class="card-body rounded shadow">
+                <h5 class="card-title">ข้อมูลทั่วไป</h5>
+                <span id="detailR"></span>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+            <div class="card p-3 m-2 shadow rounded">
+              <h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                  class="bi bi-ui-checks" viewBox="0 0 16 16">
+                  <path
+                    d="M7 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-1zM2 1a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm0 8a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H2zm.854-3.646a.5.5 0 0 1-.708 0l-1-1a.5.5 0 1 1 .708-.708l.646.647 1.646-1.647a.5.5 0 1 1 .708.708l-2 2zm0 8a.5.5 0 0 1-.708 0l-1-1a.5.5 0 0 1 .708-.708l.646.647 1.646-1.647a.5.5 0 0 1 .708.708l-2 2zM7 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-1zm0-5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z" />
+                </svg> แจ้งซ่อมครุภัณฑ์
+              </h3>
+              <h5 id="sch_n3" style="margin-bottom:10px;margin-top:5px;" class="mt-1 text-center  text-dark fw-bold">
+              </h5>
+              <form class="needs-validation" novalidate id="user_form" onsubmit="getAllElmForm(this)">
+                <div class="input-box">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="idP" name="idP" placeholder="เลขครุภัณฑ์" readonly
+                      required>
+                    <label for="floatingInput"><i class='bx bxs-devices'></i> เลขครุภัณฑ์</label>
+                  </div>
+                </div>
+                <div class="input-box">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" list="namelist" id="nameP" name="nameP"
+                      placeholder="ผู้แจ้งซ่อม" autocomplete="off" required>
+                    <label for="floatingInput"><i class='bx bxs-user-circle'></i> ผู้แจ้งซ่อม</label>
+                    <datalist id="namelist"></datalist>
+                  </div>
+                </div>
+                <div class="input-box">
+                  <div class="form-floating mb-3">
+                    <input type="email" class="form-control" list="emaillist" id="emailP" name="emailP"
+                      placeholder="E-mail" required>
+                    <label for="floatingInput"><i class='bx bx-envelope'></i> อีเมล</label>
+                    <datalist id="emaillist"></datalist>
+                  </div>
+                </div>
+                <div class="input-box">
+                  <div class="form-floating">
+                    <textarea class="form-control" id="detailP" name="detailP" placeholder="รายละเอียดแจ้งซ่อม"
+                      style="height: 100px" required></textarea>
+                    <label for="floatingTextarea"><i class='bx bxs-file'></i> รายละเอียดแจ้งซ่อม</label>
+                  </div>
+                </div>
+                <div class="input-box">
+                  <input type="file" class="form-control" id="file_image" name="file_image" onchange="fileValidation()"
+                    placeholder="ภาพแจ้งซ่อม" required>
+                </div>
+                <div class="input-box" id="imgbox">
+                  <div class="row mx-auto">
+                    <img id="picdata" src="" style="display:none">
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help"></p>
+                  </div>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input text-dark" type="checkbox" value="ยินยอม" name="agreement"
+                    id="agreement" required>
+                  <label class="form-check-label text-primary" for="flexCheckDefault"> ยินยอม
+                    สำหรับการให้นำข้อมูลไปใช้เพื่อในงานของระบบนี้ </label>
+                </div>
+
+                <button type="submit" id="btn_1" class="btn btn-warning btn-md w-100 rounded shadow">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                    class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">
+                    <path
+                      d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z" />
+                  </svg> บันทึกแจ้งซ่อม </button>
+                <button class="btn btn-lg w-100" style="color: #608000;display: none;" type="submit" id="btn_2"
+                  disabled>
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  กำลังบันทึกข้อมูล </button>
+              </form>
+            </div>
+            <!-- End Login -->
+          </div>
+          <div class="tab-pane fade" id="nav-detail" role="tabpanel" aria-labelledby="nav-detail-tab" tabindex="0">
+            <h3 class="mt-3">กำลังอยู่ช่วงพัฒนา</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
